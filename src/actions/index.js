@@ -4,3 +4,11 @@ export const GetRefreshToken = key => {
     payload: key
   };
 };
+
+export const GetAccessToken = key => {
+  console.log("Here ", key);
+  return {
+    type: "GOOGLE_ACCESS_TOKEN",
+    payload: key
+  };
+};
