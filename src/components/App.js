@@ -3,6 +3,7 @@ import firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { connect } from "react-redux";
 import { GetRefreshToken as GetToken } from "../actions";
+import { bindActionCreators } from "redux";
 
 firebase.initializeApp({
   apiKey: "AIzaSyCFkpceb5y8Q1hceHEXqIAGqenJrxz8450",
@@ -25,6 +26,8 @@ class App extends Component {
       this.props.GetToken(user.refreshToken);
       console.log("user", user);
     });
+
+    // this.props.sendRequestForLogin()
   };
 
   render() {
@@ -48,11 +51,11 @@ class App extends Component {
             />
           </span>
         ) : (
-          <StyledFirebaseAuth
-            uiConfig={this.uiConfig}
-            firebaseAuth={firebase.auth()}
-          />
-        )}
+            <StyledFirebaseAuth
+              uiConfig={this.uiConfig}
+              firebaseAuth={firebase.auth()}
+            />
+          )}
       </div>
     );
   }
@@ -63,6 +66,7 @@ const mapStateToProps = state => {
     RefreshToken: state.RefreshToken
   };
 };
+
 
 export default connect(
   mapStateToProps,
