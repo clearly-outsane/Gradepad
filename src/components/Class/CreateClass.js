@@ -6,12 +6,17 @@ class CreateClass extends Component {
         course: ''
     };
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        // call action here
+    }
+
     render() {
         console.log(this.state.className, this.state.course);
         return (
             <Fragment>
                 <div>
-                    <form>
+                    <form onSubmit={this.handleSubmit}>
                         <label>
                             Class Name:
                             <input
@@ -39,6 +44,10 @@ class CreateClass extends Component {
                                 }
                             />
                         </label>
+
+                        <br />
+
+                        <input type="submit" value="Create Class" />
                     </form>
                 </div>
             </Fragment>
