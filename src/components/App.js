@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { GoogleLoginButton } from "react-social-login-buttons";
 import { connect } from "react-redux";
-import { GetRefreshToken as GetToken } from "../actions";
-import { bindActionCreators } from "redux";
+import { GetRefreshToken as GetToken, GetAccessToken } from "../actions";
 
 firebase.initializeApp({
   apiKey: "AIzaSyCFkpceb5y8Q1hceHEXqIAGqenJrxz8450",
@@ -12,24 +11,42 @@ firebase.initializeApp({
 
 class App extends Component {
   state = { isSignedIn: false };
-  uiConfig = {
-    signInFlow: "popup",
-    signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
-    callbacks: {
-      signInSuccess: () => false
-    }
-  };
 
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user });
       this.props.GetToken(user.refreshToken);
-      console.log("user", user);
     });
 
     // this.props.sendRequestForLogin()
   };
+  onClickLogin = () => {
+    console.log("lol");
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(result => {
+        var token = result.credential.accessToken;
+        console.log(token);
+        this.props.GetAccessToken(token);
 
+        // The signed-in user info.
+        var user = result.user;
+        // ...
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+
+        // ...
+      });
+  };
   render() {
     return (
       <div className="App">
@@ -40,6 +57,7 @@ class App extends Component {
               onClick={() => {
                 firebase.auth().signOut();
                 this.props.GetToken("");
+                this.props.GetAccessToken("");
               }}
             >
               Sign out!
@@ -51,11 +69,8 @@ class App extends Component {
             />
           </span>
         ) : (
-            <StyledFirebaseAuth
-              uiConfig={this.uiConfig}
-              firebaseAuth={firebase.auth()}
-            />
-          )}
+          <GoogleLoginButton onClick={this.onClickLogin} />
+        )}
       </div>
     );
   }
@@ -70,5 +85,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { GetToken }
+  { GetToken, GetAccessToken }
 )(App);
