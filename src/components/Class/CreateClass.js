@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from 'react';
 
 class CreateClass extends Component {
     state = {
         className: '',
         course: ''
-    }
+    };
 
     render() {
-        console.log(this.state.className)
+        console.log(this.state.className, this.state.course);
         return (
             <Fragment>
                 <div>
@@ -15,23 +15,35 @@ class CreateClass extends Component {
                         <label>
                             Class Name:
                             <input
-                                name="class"
+                                type="text"
                                 value={this.state.className}
-                                onChange={className =>
-                                    this.setState({ className })
+                                onChange={event =>
+                                    this.setState({
+                                        className: event.target.value
+                                    })
                                 }
                             />
                         </label>
+
                         <br />
+
                         <label>
                             Course:
-                            <input />
+                            <input
+                                type="text"
+                                value={this.state.course}
+                                onChange={event =>
+                                    this.setState({
+                                        course: event.target.value
+                                    })
+                                }
+                            />
                         </label>
                     </form>
                 </div>
             </Fragment>
-        )
+        );
     }
 }
 
-export default CreateClass
+export default CreateClass;
