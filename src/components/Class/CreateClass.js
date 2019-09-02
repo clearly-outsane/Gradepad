@@ -1,4 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import createClassRequest from '../../redux/actions';
 
 class CreateClass extends Component {
     state = {
@@ -9,10 +12,10 @@ class CreateClass extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         // call action here
+        this.props.createClassRequest({})
     }
 
     render() {
-        console.log(this.state.className, this.state.course);
         return (
             <Fragment>
                 <div>
@@ -55,4 +58,14 @@ class CreateClass extends Component {
     }
 }
 
-export default CreateClass;
+// const mapStateToProps = (state) => ({
+
+// })
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        createClassRequest
+    }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(CreateClass);
